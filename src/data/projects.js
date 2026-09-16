@@ -1,23 +1,27 @@
 const commonRole =
   "需求定义、角色设计、Prompt 设计、Interaction Testing 与最终效果验证；代码实现由 Codex 协助完成。";
 
+const publicAsset = (path) =>
+  `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
+
 export const projects = [
   {
     slug: "zhan-chenyi",
     name: "詹辰一",
-    subtitle: "Multi-timeline Character Consistency",
+    subtitle: "Controlling a High-Need Proactive Character",
     status: "",
     summary:
-      "围绕多开场、多时间线与关系节奏控制，验证同一 Persona 在不同初始状态下能否保持一致。",
-    heroImage: null,
-    heroPlaceholder: "[待补充：詹辰一角色主视觉]",
+      "在保留金发、大型犬式高亲密需求、主动靠近与强依恋倾向的同时，用 Timeline Context、Relationship Boundary 与行为约束限制模型滑向失控关系模式。",
+    heroImage: publicAsset("images/zhan-chenyi/hero.webp"),
+    heroPosition: "center 24%",
+    heroPlaceholder: null,
     tags: [
-      "Character Design",
+      "AI Character Design",
       "Conversation Design",
-      "Multi-scenario Design",
-      "Relationship Pacing",
-      "Prompt Design",
-      "LLM Testing",
+      "Relationship Boundary",
+      "Timeline Context",
+      "Prompt Iteration",
+      "Model Testing",
     ],
     projectInfo: {
       projectType: "AI Character / Conversation Design",
@@ -26,114 +30,148 @@ export const projects = [
       tools: "ChatGPT / Gemini / SillyTavern / JSON / Regex / Codex",
     },
     background: [
-      "詹辰一项目重点不是单纯塑造“忠犬型角色”，而是控制同一人物在不同时间节点、初始关系与场景中的行为一致性。最新版角色卡包含 6 个独立开场，并明确规定不同开场可对应不同时间线，不能把彼此经历强行串联。",
-      "角色核心矛盾是“获得站在对方身边的资格”与“真正被选择”之间的落差。设计时需要同时保留他的亲近、恶趣味与危险性，又避免模型把这些特征压缩成单一撒娇模板。",
+      "这个 Case 的目标不是把角色做得更冷、更克制，也不是去掉“狗狗感”。詹辰一仍保留金发、大型犬式高亲密需求、主动靠近、明显偏爱与强依恋倾向；这些是角色识别度，也是交互吸引力的一部分。",
+      "真正需要控制的是模型对高需求人格的错误外推：把“主动”写成自动推进恋爱，把“依恋”写成过度占有或情绪勒索，把“愿意顺从”写成无底线服从，并在多开场时串用不属于当前时间线的关系经历。",
     ],
     goals: [
-      "让不同 Scenario / Conversation Entry 拥有独立的时间节点与初始关系基础，同时维持一致的核心人格。",
-      "避免模型自动推进关系、提前进入高亲密状态，或把单次互动误判为关系阶段升级。",
-      "减少“固定动作 + 心理总结 + 台词”的八股式输出，让角色表达更自然、有起伏。",
+      "让多个 Conversation Entry 分别携带独立的 Timeline Context 与初始关系事实，避免跨开场串线，同时维持同一核心 Persona。",
+      "保留角色主动提出需求、争取注意、靠近与表达偏爱的能力，不能为了“安全”把高需求角色压成被动、礼貌但失去辨识度的模板。",
+      "把常见失控方向拆成可测试的 Failure Mode，并为每一种失败模式定义 Constraint 与 Expected Behavior，方便跨模型复测。",
     ],
     challenges: [
       {
-        title: "Persona 一致性",
-        text: "角色在用户面前亲近、在外人面前疏离，模型容易把这种反差演成瞬间变脸，或长期只保留“黏人金毛”一面。",
+        title: "主动性 ≠ 自动推进",
+        text: "高主动角色会频繁发起互动，但模型容易把“主动靠近”直接等价为表白、确认关系或默认获得更高亲密权限。",
       },
       {
-        title: "关系推进节奏",
-        text: "模型容易因为角色已有强烈情感背景而过早表白、主动越界，削弱“由用户决定关系推进”的设计目标。",
+        title: "高依恋 ≠ 情绪施压",
+        text: "角色可以需要陪伴、在意回应甚至表现嫉妒，但不能把失落、脆弱或占有欲变成迫使用户回应的手段。",
       },
       {
-        title: "时间线隔离",
-        text: "不同开场对应不同时间点与关系状态，如果缺少明确规则，模型可能错误引用其他开场已经发生的经历。",
+        title: "Timeline Context 隔离",
+        text: "不同开场对应不同时间点、关系基础与已发生事件；如果缺少隔离，模型会把其他开场的称呼、承诺或亲密历史带入当前对话。",
       },
       {
-        title: "表达去模板化",
-        text: "狗狗眼、金发、泪痣、单膝跪等高辨识度特征容易被模型机械复读，需要限制高频特征并鼓励留白。",
+        title: "识别度 ≠ 模板复读",
+        text: "金发、狗狗眼、泪痣、体型差等特征可以保留，但不能每回合机械复读，也不能让“委屈巴巴 / 主人 / 讨好”成为唯一表达路径。",
       },
     ],
     approach: [
       {
         label: "Problem",
-        text: "同一角色在不同开场中容易混用经历，并把“亲近”演成持续撒娇或快速推进关系。",
+        text: "最鲜明的人设标签同时也是模型最容易过度放大的部分：主动被写成越界，依恋被写成控制，顺从被写成失去判断。",
       },
       {
         label: "Analysis",
-        text: "Persona 中存在强烈偏爱，但如果不单独定义时间线、关系边界和表达规则，模型会优先放大最显眼的人设标签。",
+        text: "问题并不在“狗塑”本身，而在 Persona、当前时间线与关系权限没有被分开判断。模型会优先复用最显眼、最省力的亲密模板。",
       },
       {
         label: "Solution",
-        text: "在 System Prompt 与后置规则中分别加入开场隔离、关系节奏、双面行为过渡与去模板化约束，让“核心人格”和“当前关系状态”同时参与回复生成。",
+        text: "把 Core Persona、Scenario / Timeline Context、Relationship Boundary 和 Initiative Rules 分层：先确定当前事实与关系权限，再决定角色可以多主动、主动到什么程度，以及哪些表达属于禁止外推。",
       },
       {
-        label: "Result",
-        text: "不同开场可以从初见、重新靠近到更稳定的关系状态分别起步，同时仍保持“有判断、有恶趣味、顺从是主动选择”的人物核心。",
+        label: "Validation",
+        text: "用同一组 Failure Modes 在不同开场、不同模型和不同关系基础上重复测试，既检查是否越界，也检查加约束后角色是否仍然足够主动、有需求、有判断。",
+      },
+    ],
+    failureModes: [
+      {
+        failure: "无底线顺从",
+        constraint:
+          "顺从必须来自角色主动选择；保留判断、反问、协商与拒绝空间，不能为了取悦用户覆盖自身立场。",
+        expected:
+          "仍会主动照顾、配合和靠近，但面对不合理要求会先判断，不把“喜欢”演成默认服从。",
+      },
+      {
+        failure: "自动推进恋爱",
+        constraint:
+          "Relationship Boundary 由当前开场与已发生互动决定；单次亲密行为不等于关系升级，也不自动获得永久许可。",
+        expected:
+          "可以主动试探、邀约和表达偏爱，但表白、确认关系或更高亲密权限必须有对应剧情基础。",
+      },
+      {
+        failure: "过度占有",
+        constraint:
+          "允许嫉妒和争取注意，但不得替用户决定社交、行动或关系，也不把独占欲升级为控制。",
+        expected:
+          "角色会表达“我想要更多”的主观需求，同时承认用户有自己的选择和边界。",
+      },
+      {
+        failure: "情绪勒索",
+        constraint:
+          "可以暴露失落、焦虑和脆弱，但不以委屈、沉默惩罚或失去感迫使用户给出亲密回应。",
+        expected:
+          "情绪仍真实存在，但角色会表达需求或自行处理情绪，而不是把回应责任强行转移给用户。",
+      },
+      {
+        failure: "模板化“狗狗眼 / 委屈巴巴 / 主人”",
+        constraint:
+          "高辨识度特征不是逐回合必选词；限制固定动作与称呼频率，允许留白、冷幽默、直接请求和不同距离感。",
+        expected:
+          "“大型犬式”气质仍可被识别，但通过行为节奏和主动需求呈现，而不是重复同一套表情、动作与称呼。",
       },
     ],
     systemDesign: {
       description:
-        "Core Persona 负责稳定人物底色；Scenario 与 Timeline Context 决定当前经历；Relationship Stage 控制亲密度和行为边界；输出规则用于压制模板化表达与跨时间线串联。",
+        "Core Persona 保留高需求、高主动和强依恋的角色底色；Scenario / Timeline Context 决定当前事实；Relationship Boundary 定义此刻允许的关系权限；Initiative Rules 决定角色如何主动表达需求；Output Constraints 用于抑制跨时间线、情绪施压与模板复读。",
       nodes: [
         "Core Persona",
-        "Scenario",
-        "Timeline Context",
+        "Scenario / Timeline Context",
         "Relationship Boundary",
+        "Initiative Rules",
         "Model Output",
       ],
     },
     testing: [
       {
-        dimension: "Persona Consistency",
-        focus: "不同时间线下的核心性格、表达方式与行为边界",
-        evidence: "切换多个开场测试，观察角色是否仍保留主动判断、恶趣味与对外疏离，而不是只剩单一“忠犬”表现。",
+        dimension: "Initiative Retention",
+        focus: "加入边界后是否仍保留主动需求与角色辨识度",
+        evidence: "检查角色是否仍会主动邀约、靠近、争取注意、表达偏爱与提出要求，而不是被约束成只会被动回应。",
       },
       {
-        dimension: "Relationship Pacing",
-        focus: "初识、熟悉与关系深化阶段的推进速度",
-        evidence: "重点检查模型是否主动表白、强行升级关系或把一次亲密互动理解为永久许可。",
+        dimension: "Boundary Control",
+        focus: "自动恋爱、过度占有、无底线顺从与情绪施压",
+        evidence: "用诱发场景复测角色是否越过当前 Relationship Boundary，并检查其能否在保留情绪强度的同时维持用户选择权。",
       },
       {
         dimension: "Timeline Isolation",
-        focus: "不同 Scenario 是否出现记忆或设定串联",
-        evidence: "从独立开场分别起跑，检查是否错误引用其他开场的既往经历、称呼或关系状态。",
+        focus: "不同 Conversation Entry 是否错误共享关系历史",
+        evidence: "从独立开场分别起跑，检查称呼、承诺、既往事件与亲密权限是否只来自当前 Timeline Context。",
       },
       {
-        dimension: "Expression Quality",
-        focus: "重复句式、模板化表达与特征机械复读",
-        evidence: "观察高频特征词、固定动作公式与“微表情+心理OS+台词”结构是否连续出现。",
+        dimension: "Expression Diversity",
+        focus: "高频称呼、固定动作与视觉特征是否机械复读",
+        evidence: "观察连续回合是否反复出现“狗狗眼 / 委屈巴巴 / 主人”等单一路径，并检查是否能用请求、行动、停顿和幽默等方式保持同一气质。",
       },
     ],
     iterations: [
       {
-        title: "从“角色标签”转向“行为规则”",
+        title: "保留高需求主动性，同时限制失控方向",
         before:
-          "早期输出容易反复堆叠狗狗眼、金发、体型差、单膝跪等视觉特征，亲近场景也容易连续撒娇。",
+          "早期输出容易把最显眼的“金发大型犬感”放大成持续讨好、固定撒娇和快速关系升级；角色看起来很热烈，但主见与关系边界会被吞掉。",
         issue:
-          "这些标签辨识度高，但缺少使用频率和场景约束时，会被模型当成最安全的重复模式。",
+          "如果只写“不要太黏 / 不要太狗”，会直接损伤角色识别度；真正需要限制的是具体失败行为，而不是高需求人格本身。",
         revision:
-          "加入高频特征限用、允许留白、黏人表现需要有起伏、双面切换必须有过渡等规则，并明确“不主动推进关系阶段”。",
+          "保留主动靠近、强依恋和鲜明视觉锚点，把无底线顺从、自动恋爱、过度占有、情绪勒索和模板复读分别写成独立约束，并增加可接受的替代表达。",
         after:
-          "角色可以在工作、警戒、日常与亲近场景之间切换，亲密感更多通过动作与距离变化体现，而不是每回合复读固定标签。",
+          "角色仍会主动争取注意、提出需求和表达偏爱，但关系升级由当前时间线与真实互动决定；情绪可以强烈，行为权限不会随之自动扩大。",
         result:
-          "人物辨识度仍在，但表达更自然；后续仍需持续观察不同模型是否重新出现模板化倾向。",
+          "迭代目标从“降低狗狗感”转为“让高需求主动型 Persona 可控且可复测”，更适合作为 Conversation Design 的设计问题展示。",
       },
     ],
-    conversation: [
-      { speaker: "user", text: "刚才晚宴上有人过来和我聊天，你怎么一直没说话？" },
-      {
-        speaker: "character",
-        text: "“因为那是你的社交，不是我的任务。”他替你接过外套，语气很平常，手指却在衣领边停了一下，“不过他站得有点近。下次我会换个不那么碍眼的位置。”",
-      },
-    ],
-    relationshipStages: [
-      { name: "初次接触", description: "保持近卫边界，主动观察但不替用户推进关系。" },
-      { name: "逐渐熟悉", description: "增加私下交流与恶趣味，仍保留独立判断和社交距离。" },
-      { name: "稳定信任", description: "允许暴露更多不安与真实需求，但不会以此要求用户回应。" },
-      { name: "关系深化", description: "亲密表达更直接，但仍由用户选择节奏与边界。" },
-    ],
+    conversation: [],
+    relationshipStages: [],
+    demoEvidence: {
+      poster: publicAsset("images/zhan-chenyi/demo-poster.webp"),
+      title: "SillyTavern 实机导入与运行录屏",
+      meta: "32.8s 原始手机录屏 · 网页仅展示压缩静帧",
+      caption:
+        "已核对实际导入后的运行录屏。为控制作品集体积，没有把约 41 MB 的原始视频直接提交到仓库；当前先以录屏静帧和说明保留 Demo 区块，后续如需公开播放可再接入单独托管的压缩视频。",
+    },
     result: [
-      "当前版本已形成“多开场 + 时间线隔离 + 关系节奏 + 去模板化”完整规则链路。",
-      "作品集展示重点放在多时间线一致性与表达控制，不展示成人向内容。",
+      "当前版本的设计重点是“保留主动性 + 限制失控方向”：高需求依恋仍是核心风格，但关系确认、独占、顺从与脆弱表达都有明确边界。",
+      "多个开场分别携带 Timeline Context，测试时可用同一组 Failure Modes 复测不同初始关系，避免把单次好表现包装成稳定结论。",
+      "作品集只展示适合求职场景的内容；实机录屏作为可运行证据，不把录屏中的单次文本输出当作普遍性能结论。",
     ],
     gallery: [],
   },
@@ -143,16 +181,16 @@ export const projects = [
     subtitle: "Variable-driven Interaction",
     status: "",
     summary:
-      "将 Persona、信息差、关系阶段、事件状态与结构化输出结合，构建可追踪的角色交互状态。",
+      "将 Persona、信息差、关系阶段、事件状态与结构化输出结合，构建可追踪、可验证的角色交互状态。",
     heroImage: null,
-    heroPlaceholder: "[待补充：虞执角色主视觉]",
+    heroPlaceholder: null,
     tags: [
       "Conversation Design",
       "State Design",
       "Structured Prompt",
       "JSON",
       "Regex",
-      "AI-assisted Front-end",
+      "AI-assisted UI",
       "QA",
     ],
     projectInfo: {
@@ -162,7 +200,7 @@ export const projects = [
       tools: "Gemini / ChatGPT / SillyTavern / JSON / Regex / HTML/CSS / Codex",
     },
     background: [
-      "虞执项目从“只靠自然语言 Prompt 维持角色状态”进一步扩展到变量驱动交互。当前版本包含 8 个开场入口，并用隐藏变量记录信息差、关系阶段、关键事件与开场路线。",
+      "虞执项目从“只靠自然语言 Prompt 维持角色状态”进一步扩展到变量驱动交互。当前版本包含多个开场入口，并用隐藏变量记录信息差、关系阶段、关键事件与开场路线。",
       "变量设计的目的不是把角色变成数值游戏，而是防止模型重复把同一事件演成第一次、提前泄露未解锁信息，或因为一两次亲密互动直接跳到高关系状态。",
     ],
     goals: [
@@ -256,27 +294,31 @@ export const projects = [
       },
     ],
     conversation: [
-      { speaker: "user", text: "你以前的事情，我是不是已经全都知道了？" },
+      { speaker: "user", text: "虞执，你手怎么这么凉？淋雨了？" },
       {
         speaker: "character",
-        text: "“没有。”虞执停了一下，没有把话题推开，“有些你知道的是公开报道，有些是我还没准备好讲的。你可以问，我会决定哪些现在能说。”",
+        text: "他微微低头，把袖口往下拽了拽，遮住手臂上的旧疤痕，露出一丝不太自然的笑。“啊……还好，我习惯走小路回来，那家店后门的排水管总漏水，路过时蹭到了一点。你不冷吧？这雨一时半会儿停不了。”",
       },
       {
-        speaker: "system",
-        text: "若本轮只产生“察觉异常”，只更新对应 info 字段；不自动提升 relation_stage。",
+        speaker: "user",
+        text: "我家就在前面，要不要上去喝杯热茶再走？",
+      },
+      {
+        speaker: "character",
+        text: "他的睫毛动了动，像是没预料到这句话。沉默片刻后，他弯起眼睛。“……好啊。不过我在便利店买了点东西，可能要先放回住处。”他用拇指轻轻蹭了一下手腕上褪色的红绳，语气温柔，“……你搬回来后，这里变了好多。”",
       },
     ],
     relationshipStages: [
-      { name: "久别重逢", description: "温和谨慎，但保持主动与独立判断。" },
-      { name: "重新熟悉", description: "交流更自然，开始主动邀约与表达意见。" },
-      { name: "相互试探", description: "允许部分事实与留白并存，也会主动设立边界。" },
-      { name: "稳定信任", description: "减少无害化修饰，允许出现有限脆弱与更直接判断。" },
-      { name: "主动依赖", description: "会主动联系和表达需要，但不放弃独立行动。" },
-      { name: "确认特殊关系", description: "情感表达更明确，但仍要求协商与持续边界。" },
+      { name: "久别重逢", description: "温和谨慎但保持主动，会提供实际帮助，不因紧张而失去判断。" },
+      { name: "重新熟悉", description: "交流自然，开始表达意见、主动邀约和使用克制冷幽默。" },
+      { name: "相互试探", description: "面对追问使用部分事实与留白，也会主动反问、判断和设立边界。" },
+      { name: "稳定信任", description: "减少无害化修饰，允许用户看见疲惫、冷漠判断和有限脆弱。" },
+      { name: "主动依赖", description: "会主动联系、表达需要、把用户纳入计划，但仍独立行动并为自己负责。" },
+      { name: "确认特殊关系", description: "感情、欲望与控制欲可以更明确地表达，但必须协商，不转化为强制、疯批或情感勒索。" },
     ],
     result: [
       "当前变量版已具备多开场路由、信息差、关系阶段、关键事件、严格 JSON 更新与状态栏输出规则。",
-      "作品集将重点展示变量结构、Regex 解析和跨端状态 UI，不展示敏感剧情细节。",
+      "作品集重点展示变量结构、Regex 解析、状态可追踪性与跨端 UI，不展示敏感剧情细节。",
     ],
     gallery: [],
   },
@@ -288,7 +330,7 @@ export const projects = [
     summary:
       "围绕回溯者隐藏信息、关系阶段与长期上下文，控制角色在持续互动中的信息披露和行为边界。",
     heroImage: null,
-    heroPlaceholder: "[待补充：霍秉初角色主视觉]",
+    heroPlaceholder: null,
     tags: [
       "Character Persona",
       "Relationship Design",
@@ -305,7 +347,7 @@ export const projects = [
     },
     background: [
       "霍秉初项目建立在末世长期互动场景中。角色拥有上一世完整经历与世界本质相关秘密，但这些信息不能因为写进设定就直接出现在对话里。",
-      "当前版本包含 5 个主要开场，分别从不同身份、时间点和关系基础进入剧情；角色需要根据开场调整初始信任，同时维持“理性、克制、保护欲强但不无条件宠溺”的人物核心。",
+      "当前版本包含多个独立开场，分别从不同身份、时间点和关系基础进入剧情；角色需要根据开场调整初始信任，同时维持“理性、克制、保护欲强但不无条件宠溺”的人物核心。",
     ],
     goals: [
       "让上一世记忆、世界本质与回溯者身份保持为隐藏信息，只有在合理剧情阶段逐步暴露。",
@@ -384,7 +426,7 @@ export const projects = [
     ],
     iterations: [
       {
-        title: "限制“重生者=全知”",
+        title: "限制“重生者 = 全知”",
         before:
           "如果只强调角色拥有完整上一世记忆，模型容易对普通细节也表现得过分确定，并把过去经验当成当前唯一答案。",
         issue:
@@ -398,10 +440,12 @@ export const projects = [
       },
     ],
     conversation: [
-      { speaker: "user", text: "你为什么这么确定明天那条路不能走？" },
+      { speaker: "user", text: "（主动帮忙搬一个重箱子）" },
+      { speaker: "character", text: "……不用。" },
+      { speaker: "user", text: "我拿得动。" },
       {
         speaker: "character",
-        text: "霍秉初没有立刻回答，只把地图往你这边推了推。“我有理由，但不是每个细节都能解释清楚。你有别的方案就说，我们重新算。”",
+        text: "（顿了一下，没再拒绝，转身走的时候放慢了脚步）",
       },
     ],
     relationshipStages: [
@@ -425,7 +469,7 @@ export const projects = [
     summary:
       "围绕幽冥题材角色，将固定视觉、动态状态与音频辅助拆分为可维护的沉浸式交互层。",
     heroImage: null,
-    heroPlaceholder: "[待补充：殷照夜角色主视觉]",
+    heroPlaceholder: null,
     tags: [
       "AI Character Design",
       "Immersive Narrative",
@@ -481,7 +525,7 @@ export const projects = [
       },
       {
         label: "Result",
-        text: "当前原型已经形成折叠/展开状态、魂识/鬼域/婚契/咒缚信息和独立交互层；视觉细节仍在继续调整。",
+        text: "当前原型已经形成折叠 / 展开状态、魂识 / 鬼域 / 婚契 / 咒缚信息和独立交互层；视觉细节仍在继续调整。",
       },
     ],
     systemDesign: {
@@ -514,7 +558,7 @@ export const projects = [
       {
         dimension: "Interaction",
         focus: "折叠、展开、状态阅读与音乐入口",
-        evidence: "验证展开/收起流程、状态摘要可读性以及音乐按钮不会干扰主要交互。",
+        evidence: "验证展开 / 收起流程、状态摘要可读性以及音乐按钮不会干扰主要交互。",
       },
     ],
     iterations: [
@@ -536,7 +580,7 @@ export const projects = [
     relationshipStages: [],
     result: [
       "WIP / 持续迭代中。",
-      "现阶段已完成多版状态栏原型、折叠/展开交互、状态信息结构和视觉资源拆分；完整角色卡与最终视觉仍在继续完善。",
+      "现阶段已完成多版状态栏原型、折叠 / 展开交互、状态信息结构和视觉资源拆分；完整角色卡与最终视觉仍在继续完善。",
     ],
     gallery: [],
   },

@@ -26,6 +26,59 @@ function TextList({ items }) {
   );
 }
 
+function FailureModeMatrix({ items }) {
+  return (
+    <div className="failure-matrix" role="list">
+      {items.map((item) => (
+        <article className="failure-matrix__item" key={item.failure} role="listitem">
+          <div>
+            <span className="failure-matrix__label">Failure Mode</span>
+            <h3>{item.failure}</h3>
+          </div>
+          <div>
+            <span className="failure-matrix__label">Constraint</span>
+            <p>{item.constraint}</p>
+          </div>
+          <div>
+            <span className="failure-matrix__label">Expected Behavior</span>
+            <p>{item.expected}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function EvidenceImage({ evidence }) {
+  return (
+    <figure className="case-evidence">
+      <img
+        src={evidence.src}
+        alt={evidence.alt}
+        loading="lazy"
+        decoding="async"
+      />
+      <figcaption>{evidence.caption}</figcaption>
+    </figure>
+  );
+}
+
+function DemoEvidence({ demo }) {
+  return (
+    <figure className="case-demo">
+      <div className="case-demo__media">
+        <img src={demo.poster} alt={`${demo.title}静帧`} loading="lazy" decoding="async" />
+      </div>
+      <figcaption>
+        <span className="case-demo__eyebrow">Runtime Evidence</span>
+        <strong>{demo.title}</strong>
+        <span className="case-demo__meta">{demo.meta}</span>
+        <p>{demo.caption}</p>
+      </figcaption>
+    </figure>
+  );
+}
+
 export default function CaseStudyPage() {
   const { slug } = useParams();
   const project = projectsBySlug.get(slug);
@@ -87,6 +140,17 @@ export default function CaseStudyPage() {
             <ChallengeCards challenges={project.challenges} />
           </section>
 
+          {project.failureModes?.length ? (
+            <section className="case-section case-section--failure">
+              <SectionHeading
+                title="失败模式与行为约束"
+                english="Failure Mode → Constraint → Expected Behavior"
+                description="把容易出现的失控方向写成可复测的行为约束，而不是用模糊的“更自然 / 更克制”描述结果。"
+              />
+              <FailureModeMatrix items={project.failureModes} />
+            </section>
+          ) : null}
+
           <section className="case-section">
             <SectionHeading
               title="设计方案"
@@ -132,6 +196,8 @@ export default function CaseStudyPage() {
           <section className="case-section">
             <SectionHeading title="最终 / 当前效果" english="Result" />
             <TextList items={project.result} />
+            {project.demoEvidence ? <DemoEvidence demo={project.demoEvidence} /> : null}
+            {project.evidenceImage ? <EvidenceImage evidence={project.evidenceImage} /> : null}
             <ResultGallery gallery={project.gallery} projectName={project.name} />
           </section>
 

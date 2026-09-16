@@ -7,6 +7,11 @@ export default function ProjectVisual({ project, className = "", eager = false }
           alt={`${project.name}角色主视觉`}
           loading={eager ? "eager" : "lazy"}
           decoding="async"
+          style={
+            project.heroPosition
+              ? { objectPosition: project.heroPosition }
+              : undefined
+          }
         />
       </figure>
     );
