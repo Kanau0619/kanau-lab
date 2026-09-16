@@ -11,11 +11,15 @@ export default function PortfolioHome() {
       <main>
         <section className="home-hero container">
           <div className="home-hero__main">
-            <h1>AI Character &amp;<br />Conversation Design</h1>
+            <p className="home-hero__eyebrow">Kanau Lab · Selected Works</p>
+            <h1>
+              AI Character &amp;
+              <br />
+              Conversation Design
+            </h1>
             <p>
-              面向 AI 角色内容策划、AI 陪伴产品与 Conversation Design
-              岗位的专业作品集。重点呈现我如何设计角色行为、组织 Prompt
-              与交互系统，并通过测试和迭代改善体验。
+              从 Persona、关系节奏和信息边界，到变量状态、Prompt 结构与多模型测试。
+              这里记录我如何把一个角色想法拆成可运行、可测试、可以继续迭代的 AI 交互体验。
             </p>
             <a className="button button--primary" href="#case-studies">
               查看项目
@@ -26,7 +30,7 @@ export default function PortfolioHome() {
             <span>Character Design</span>
             <span>Conversation Design</span>
             <span>Prompt Iteration</span>
-            <span>Relationship Design</span>
+            <span>State &amp; Relationship Design</span>
             <span>Model Testing</span>
           </div>
         </section>
@@ -35,7 +39,7 @@ export default function PortfolioHome() {
           <header className="projects__header">
             <h2>Selected Case Studies</h2>
             <p>
-              每个项目聚焦一个不同的设计问题，并使用统一结构呈现背景、难点、系统设计、测试和迭代过程。
+              四个项目分别聚焦多时间线一致性、变量驱动交互、长期信息边界与沉浸式界面迭代。每个案例都保留真实的设计取舍、测试方法和已知限制。
             </p>
           </header>
           {projects.map((project, index) => (
@@ -44,7 +48,7 @@ export default function PortfolioHome() {
         </section>
       </main>
       <footer className="site-footer container">
-        <span>AI Character &amp; Conversation Design</span>
+        <span>Kanau Lab · AI Character &amp; Conversation Design</span>
         <Link to="/">Back to top</Link>
       </footer>
     </>
