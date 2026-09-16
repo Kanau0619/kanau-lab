@@ -3,9 +3,9 @@
 > **AI Character & Conversation Design Portfolio**  
 > AI Character Design · Conversation Design · Prompt Iteration · State Design · Model Testing
 
-### [▶ 在线预览 / Live Portfolio（中国大陆优先）](https://kanau-lab-soebwxkv.edgeone.cool/)
+### [▶ 当前分支预览 / Portfolio Preview](https://kanau0619.github.io/kanau-lab/preview/)
 
-[GitHub Pages 备用入口](https://kanau0619.github.io/kanau-lab/)
+[正式站点 / Live Portfolio（中国大陆优先）](https://kanau-lab-soebwxkv.edgeone.cool/) · [GitHub Pages 正式入口](https://kanau0619.github.io/kanau-lab/)
 
 ---
 
