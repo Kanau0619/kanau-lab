@@ -1,17 +1,32 @@
+const publicAsset = (path) =>
+  `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
+
+const fallbackHeroes = {
+  "yu-zhi": publicAsset("images/yu-zhi/hero.webp"),
+  "huo-bingchu": publicAsset("images/huo-bingchu/hero.webp"),
+  "yin-zhaoye": publicAsset("images/yin-zhaoye/hero.webp"),
+};
+
+const fallbackHeroPositions = {
+  "yu-zhi": "center 31%",
+  "huo-bingchu": "center 27%",
+  "yin-zhaoye": "center 34%",
+};
+
 export default function ProjectVisual({ project, className = "", eager = false }) {
-  if (project.heroImage) {
+  const heroImage = project.heroImage || fallbackHeroes[project.slug];
+  const heroPosition =
+    project.heroPosition || fallbackHeroPositions[project.slug];
+
+  if (heroImage) {
     return (
       <figure className={`media-frame project-visual ${className}`.trim()}>
         <img
-          src={project.heroImage}
+          src={heroImage}
           alt={`${project.name}角色主视觉`}
           loading={eager ? "eager" : "lazy"}
           decoding="async"
-          style={
-            project.heroPosition
-              ? { objectPosition: project.heroPosition }
-              : undefined
-          }
+          style={heroPosition ? { objectPosition: heroPosition } : undefined}
         />
       </figure>
     );

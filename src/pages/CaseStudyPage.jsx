@@ -9,9 +9,9 @@ import IterationFlow from "../components/IterationFlow";
 import SystemDiagram from "../components/SystemDiagram";
 import TestingMatrix from "../components/TestingMatrix";
 import BeforeAfter from "../components/BeforeAfter";
-import ConversationExample from "../components/ConversationExample";
 import RelationshipTimeline from "../components/RelationshipTimeline";
 import ResultGallery from "../components/ResultGallery";
+import StatusPreview, { hasStatusPreview } from "../components/StatusPreview";
 import { ArrowLeftIcon } from "../components/Icons";
 import { projectsBySlug } from "../data/projects";
 import NotFoundPage from "./NotFoundPage";
@@ -168,6 +168,17 @@ export default function CaseStudyPage() {
             />
           </section>
 
+          {hasStatusPreview(project.slug) ? (
+            <section className="case-section">
+              <SectionHeading
+                title="状态栏结构预览"
+                english="Regex / Status UI Preview"
+                description="只展示真实字段结构和信息层级，不把作品集做成角色卡发布页。"
+              />
+              <StatusPreview project={project} />
+            </section>
+          ) : null}
+
           <section className="case-section">
             <SectionHeading
               title="测试方法"
@@ -188,9 +199,6 @@ export default function CaseStudyPage() {
                 <BeforeAfter item={item} key={item.title} />
               ))}
             </div>
-            {project.conversation.length ? (
-              <ConversationExample messages={project.conversation} />
-            ) : null}
           </section>
 
           <section className="case-section">
