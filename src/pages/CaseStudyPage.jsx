@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import SiteHeader from "../components/SiteHeader";
-import MediaFrame from "../components/MediaFrame";
+import ProjectVisual from "../components/ProjectVisual";
 import TagList from "../components/TagList";
 import SectionHeading from "../components/SectionHeading";
 import ProjectInfoCard from "../components/ProjectInfoCard";
@@ -54,13 +54,7 @@ export default function CaseStudyPage() {
             <p className="case-hero__summary">{project.summary}</p>
             <TagList tags={project.tags} />
           </div>
-          <MediaFrame
-            src={project.heroImage}
-            alt={`${project.name}角色主视觉`}
-            placeholder={project.heroPlaceholder}
-            className="case-hero__media"
-            eager
-          />
+          <ProjectVisual project={project} className="case-hero__media" eager />
         </section>
 
         <div className="case-content container">
@@ -88,7 +82,7 @@ export default function CaseStudyPage() {
             <SectionHeading
               title="核心难点"
               english="Challenges"
-              description="这里呈现需要解决的行为、状态或体验问题，而不是角色背景故事。"
+              description="聚焦真正影响角色行为、状态或交互体验的问题。"
             />
             <ChallengeCards challenges={project.challenges} />
           </section>
@@ -97,16 +91,13 @@ export default function CaseStudyPage() {
             <SectionHeading
               title="设计方案"
               english="Design Approach"
-              description="使用一条具体迭代链路说明如何从问题走到可验证结果。"
+              description="用一次具体迭代说明问题如何被拆解、调整并重新验证。"
             />
             <IterationFlow steps={project.approach} />
           </section>
 
           <section className="case-section case-section--band">
-            <SectionHeading
-              title="交互 / Prompt 结构"
-              english="System Design"
-            />
+            <SectionHeading title="交互 / Prompt 结构" english="System Design" />
             <SystemDiagram
               nodes={project.systemDesign.nodes}
               description={project.systemDesign.description}
@@ -117,7 +108,7 @@ export default function CaseStudyPage() {
             <SectionHeading
               title="测试方法"
               english="Testing"
-              description="默认使用测试矩阵记录观察维度、测试重点与判断依据；只有存在真实证据时才添加截图。"
+              description="记录观察维度、测试重点与判断依据；不为了填版面强行添加截图。"
             />
             <TestingMatrix items={project.testing} />
           </section>
@@ -126,7 +117,7 @@ export default function CaseStudyPage() {
             <SectionHeading
               title="Bad Case 与迭代"
               english="Iteration"
-              description="直接展示模型输出文本、问题分析、修改内容与调整后的结果。"
+              description="保留问题、分析、修改和结果，重点展示判断过程而非包装成果。"
             />
             <div className="iteration-stack">
               {project.iterations.map((item) => (
@@ -141,18 +132,12 @@ export default function CaseStudyPage() {
           <section className="case-section">
             <SectionHeading title="最终 / 当前效果" english="Result" />
             <TextList items={project.result} />
-            <ResultGallery
-              gallery={project.gallery}
-              projectName={project.name}
-            />
+            <ResultGallery gallery={project.gallery} projectName={project.name} />
           </section>
 
           {project.relationshipStages.length ? (
             <section className="case-section">
-              <SectionHeading
-                title="关系阶段"
-                english="Relationship Stage"
-              />
+              <SectionHeading title="关系阶段" english="Relationship Stage" />
               <RelationshipTimeline stages={project.relationshipStages} />
             </section>
           ) : null}
@@ -166,7 +151,7 @@ export default function CaseStudyPage() {
       <footer className="site-footer container">
         <Link className="back-link" to="/">
           <ArrowLeftIcon />
-          返回 AI Character &amp; Conversation Design
+          返回 Kanau Lab
         </Link>
       </footer>
     </>
