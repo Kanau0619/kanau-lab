@@ -5,13 +5,13 @@ export default function SiteHeader() {
     <header className="site-header">
       <div className="container site-header__inner">
         <Link className="site-brand" to="/">
-          AI Character &amp; Conversation Design
+          Kanau Lab
         </Link>
         <a
           className="site-header__link"
           href={`${import.meta.env.BASE_URL}#case-studies`}
         >
-          Case Studies
+          Selected Works
         </a>
       </div>
     </header>
