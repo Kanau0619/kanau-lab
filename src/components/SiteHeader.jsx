@@ -7,7 +7,10 @@ export default function SiteHeader() {
         <Link className="site-brand" to="/">
           AI Character &amp; Conversation Design
         </Link>
-        <a className="site-header__link" href="/#case-studies">
+        <a
+          className="site-header__link"
+          href={`${import.meta.env.BASE_URL}#case-studies`}
+        >
           Case Studies
         </a>
       </div>

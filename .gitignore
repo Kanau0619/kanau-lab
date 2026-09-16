@@ -3,3 +3,8 @@ dist/
 .sites-runtime/
 work/
 *.log
+
+# Tencent Cloud EdgeOne
+.env
+.edgeone/*
+.tef_dist/*
