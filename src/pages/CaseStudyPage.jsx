@@ -16,6 +16,16 @@ import { ArrowLeftIcon } from "../components/Icons";
 import { projectsBySlug } from "../data/projects";
 import NotFoundPage from "./NotFoundPage";
 
+const ASSET_VERSION = "20260916-hq1";
+
+function versionAsset(src) {
+  if (!src || src.includes(`v=${ASSET_VERSION}`)) {
+    return src;
+  }
+
+  return `${src}${src.includes("?") ? "&" : "?"}v=${ASSET_VERSION}`;
+}
+
 function TextList({ items }) {
   return (
     <div className="prose">
@@ -53,7 +63,7 @@ function EvidenceImage({ evidence }) {
   return (
     <figure className="case-evidence">
       <img
-        src={evidence.src}
+        src={versionAsset(evidence.src)}
         alt={evidence.alt}
         loading="lazy"
         decoding="async"
@@ -67,7 +77,12 @@ function DemoEvidence({ demo }) {
   return (
     <figure className="case-demo">
       <div className="case-demo__media">
-        <img src={demo.poster} alt={`${demo.title}静帧`} loading="lazy" decoding="async" />
+        <img
+          src={versionAsset(demo.poster)}
+          alt={`${demo.title}静帧`}
+          loading="lazy"
+          decoding="async"
+        />
       </div>
       <figcaption>
         <span className="case-demo__eyebrow">Runtime Evidence</span>
