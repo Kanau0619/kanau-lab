@@ -1,0 +1,79 @@
+name: Deploy portfolio branch preview
+
+on:
+  push:
+    branches:
+      - portfolio-content-v1
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}preview/
+    steps:
+      - name: Check out preview branch
+        uses: actions/checkout@v6
+        with:
+          ref: portfolio-content-v1
+          path: preview-src
+
+      - name: Check out main branch
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: main-src
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            preview-src/package-lock.json
+            main-src/package-lock.json
+
+      - name: Build main site
+        working-directory: main-src
+        run: |
+          npm ci
+          npm run build -- --mode github
+
+      - name: Build preview site
+        working-directory: preview-src
+        run: |
+          npm ci
+          npm run build -- --mode github-preview
+
+      - name: Assemble production root and branch preview
+        run: |
+          mkdir -p site/preview
+          cp -R main-src/dist/. site/
+          cp -R preview-src/dist/. site/preview/
+          cp site/index.html site/404.html
+          for slug in zhan-chenyi yu-zhi huo-bingchu yin-zhaoye; do
+            mkdir -p "site/preview/character/$slug"
+            cp site/preview/index.html "site/preview/character/$slug/index.html"
+          done
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
