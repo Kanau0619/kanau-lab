@@ -1,0 +1,102 @@
+name: Enhance portfolio images
+
+on:
+  push:
+    branches:
+      - portfolio-content-v1
+    paths:
+      - .image-enhance-trigger
+
+permissions:
+  contents: write
+
+jobs:
+  enhance-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out portfolio branch
+        uses: actions/checkout@v4
+        with:
+          ref: portfolio-content-v1
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install image tooling
+        run: python -m pip install --disable-pip-version-check opencv-contrib-python-headless pillow numpy
+
+      - name: Download EDSR super-resolution model
+        run: |
+          curl -L --fail --retry 3 \
+            -o /tmp/EDSR_x3.pb \
+            https://github.com/Saafke/EDSR_Tensorflow/raw/master/models/EDSR_x3.pb
+
+      - name: Enhance portfolio assets
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import cv2
+          import numpy as np
+          from PIL import Image, ImageFilter
+
+          hero_paths = [
+              Path("public/images/zhan-chenyi/hero.webp"),
+              Path("public/images/yu-zhi/hero.webp"),
+              Path("public/images/huo-bingchu/hero.webp"),
+              Path("public/images/yin-zhaoye/hero.webp"),
+          ]
+          demo_path = Path("public/images/zhan-chenyi/demo-poster.webp")
+
+          sr = cv2.dnn_superres.DnnSuperResImpl_create()
+          sr.readModel("/tmp/EDSR_x3.pb")
+          sr.setModel("edsr", 3)
+
+          for path in hero_paths:
+              img = cv2.imread(str(path), cv2.IMREAD_COLOR)
+              if img is None:
+                  raise RuntimeError(f"Could not read {path}")
+
+              h, w = img.shape[:2]
+              if w < 900:
+                  # Learned super-resolution is used only because the currently
+                  # committed portfolio assets are low-resolution derivatives.
+                  img = sr.upsample(img)
+              elif w < 1200:
+                  scale = 1200 / w
+                  img = cv2.resize(
+                      img,
+                      (1200, round(h * scale)),
+                      interpolation=cv2.INTER_LANCZOS4,
+                  )
+
+              rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+              pil = Image.fromarray(rgb)
+              pil = pil.filter(ImageFilter.UnsharpMask(radius=0.7, percent=115, threshold=3))
+              pil.save(path, "WEBP", quality=90, method=6)
+              print(path, pil.size, path.stat().st_size)
+
+          # Runtime evidence contains UI text, so avoid learned reconstruction
+          # and use conservative Lanczos scaling + light sharpening instead.
+          demo = Image.open(demo_path).convert("RGB")
+          if demo.width < 720:
+              scale = min(4, max(2, round(720 / demo.width)))
+              demo = demo.resize(
+                  (demo.width * scale, demo.height * scale),
+                  Image.Resampling.LANCZOS,
+              )
+          demo = demo.filter(ImageFilter.UnsharpMask(radius=0.55, percent=110, threshold=2))
+          demo.save(demo_path, "WEBP", quality=92, method=6)
+          print(demo_path, demo.size, demo_path.stat().st_size)
+          PY
+
+      - name: Commit enhanced assets
+        run: |
+          rm -f .image-enhance-trigger
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/images .image-enhance-trigger
+          git commit -m "Enhance portfolio image resolution"
+          git push origin HEAD:portfolio-content-v1
