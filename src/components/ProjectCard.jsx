@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRightIcon } from "./Icons";
-import MediaFrame from "./MediaFrame";
+import ProjectVisual from "./ProjectVisual";
 import TagList from "./TagList";
 
 export default function ProjectCard({ project, index }) {
@@ -26,11 +26,7 @@ export default function ProjectCard({ project, index }) {
           </Link>
         </div>
       </div>
-      <MediaFrame
-        src={project.heroImage}
-        alt={`${project.name}角色主视觉`}
-        placeholder={project.heroPlaceholder}
-      />
+      <ProjectVisual project={project} />
     </article>
   );
 }
