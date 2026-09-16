@@ -133,7 +133,9 @@ export default function CaseStudyPage() {
                 <BeforeAfter item={item} key={item.title} />
               ))}
             </div>
-            <ConversationExample messages={project.conversation} />
+            {project.conversation.length ? (
+              <ConversationExample messages={project.conversation} />
+            ) : null}
           </section>
 
           <section className="case-section">
